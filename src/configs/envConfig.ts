@@ -8,6 +8,7 @@ interface Ienv {
   refreshTokenExpiresIn: string | undefined;
   accessTokenSecret: string | undefined;
   accessTokenExpiresIn: string | undefined;
+  bcrypt: string | undefined;
 }
 
 const envConfig: Ienv = {
@@ -17,6 +18,7 @@ const envConfig: Ienv = {
   refreshTokenExpiresIn: process.env.refresh_token_expiresIn,
   accessTokenSecret: process.env.access_token_secret,
   accessTokenExpiresIn: process.env.access_token_expireIn,
+  bcrypt: process.env.BCRYPT_SALT_ROUNDS,
 };
 
 export default envConfig;

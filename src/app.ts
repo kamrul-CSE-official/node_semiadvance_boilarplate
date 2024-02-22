@@ -3,6 +3,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { rateLimit } from "express-rate-limit";
 
+
+import authRouters from "./app/routers/auth.routers";
+
 const app = express();
 
 // Rate limiting configuration
@@ -27,5 +30,7 @@ app.use(limiter);
 app.get("/api/v1", (req, res) => {
   res.send("Real chat💬");
 });
+
+app.use("/api/v1/auth", authRouters);
 
 export default app;
