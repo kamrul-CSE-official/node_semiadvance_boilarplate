@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
-
 
 import authRouters from "./app/routers/auth.routers";
 
@@ -24,13 +24,13 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(limiter);
 
 app.get("/api/v1", (req, res) => {
   res.send("Real chat💬");
 });
 
-app.use("/api/v1/auth", authRouters);
+app.use("/api/v1/auth", limiter, authRouters);
 
 export default app;

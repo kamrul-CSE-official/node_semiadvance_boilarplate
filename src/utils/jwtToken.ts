@@ -62,26 +62,35 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
     (err: any, decoded: any) => {
       if (err) {
         if (err.name === "TokenExpiredError") {
-          // If token is expired, generate a new access token and attach it to the response
-          const newAccessToken = createAccessToken(decoded);
+          const expiredDecoded: any = jwt.decode(accessToken);
+          if (!expiredDecoded) {
+            return res.status(401).json({
+              message: "Invalid access token",
+              status: "fail",
+            });
+          }
+          const { name, img, _id } = expiredDecoded;
+          const newAccessToken = createAccessToken({ name, img, _id });
           return res.status(401).json({
             message: "Access token expired",
             status: "fail",
-            accessToken: newAccessToken,
+            accessToken: `Bearer ${newAccessToken}`,
           });
         } else {
           return res
             .status(403)
             .json({ message: "Forbidden access", status: "fail" });
         }
+      } else {
+        (req as any).accessTokenData = decoded;
+        next();
       }
-      (req as any).accessTokenData = decoded;
-      next();
     }
   );
 };
 
-export{
+
+export {
   createRefreshToken,
   createAccessToken,
   verifyRefreshToken,

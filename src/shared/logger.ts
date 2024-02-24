@@ -21,7 +21,7 @@ const commonOptions = {
   ),
   datePattern: "YYYY-MM-DD-HH",
   zippedArchive: true,
-  maxSize: "20m",
+  maxSize: "15m",
   maxFiles: "7d",
 };
 
