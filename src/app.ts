@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -32,5 +32,17 @@ app.get("/api/v1", (req, res) => {
 });
 
 app.use("/api/v1/auth", limiter, authRouters);
+
+// error hendler
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next("Requested URL was not found!");
+});
+
+app.use((err: any, req: Request, res: Response) => {
+  if (err.message) {
+    res.status(500).json({ status: "fail", message: err.message });
+  }
+});
 
 export default app;
